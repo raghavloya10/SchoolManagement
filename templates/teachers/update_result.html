@@ -1,0 +1,41 @@
+{% extends 'teachers/base.html' %}
+{% load teacher_extras %}
+{% block body_block %}
+<br><br>
+  <div class="container">
+    <h2>{{subject.name|title}} - {{subject.standard}}</h2><br><br>
+    <form class="result-form" action="" method="post">
+      {% csrf_token %}
+      <div class="table-responsive-sm">
+        <table class="table thead-dark table-hover table-bordered">
+            <tr>
+              <th>Roll no</th>
+              <th class="name-cell">Name</th>
+              {% for examination in examinations %}
+                <th>{{examination.name}}</th>
+              {% endfor %}
+            </tr>
+          {% for student,examination in results.items %}
+              <tr>
+                <td>{{student.roll_number}}</td>
+                <td class="name-cell">
+                  <a href="{% url 'students:profile' slug=student.slug %}">{{student.user.first_name}} {{student.user.last_name}}</a>
+                </td>
+                {% for examination,result in examination.items %}
+                  <td>
+                    {% with ans=student.roll_number|myConcat:examination.name %}
+                      <input type="number"
+                              class="marks-input"
+                              name="{{ans}}"
+                              value="{{result.marks_secured}}" />
+                    {% endwith %}
+                  </td>
+                {% endfor %}
+              </tr>
+          {% endfor %}
+        </table>
+        <input class="btn btn-primary" type="submit" name="" value="Submit"/>
+      </div>
+    </form>
+  </div>
+{% endblock %}

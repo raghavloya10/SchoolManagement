@@ -1,0 +1,35 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'account/signup.css' %}">
+</head>
+
+<body>
+    <div class="login-box">
+      <img src="{% static 'images/login3.png' %}" alt="" class="avatar"><br>
+      <form class="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% buttons %}
+           <button type="submit" class="btn btn-primary btn-block">
+             Log In
+           </button>
+        {% endbuttons %}
+      </form>
+    </div>
+
+</body>
+</html>

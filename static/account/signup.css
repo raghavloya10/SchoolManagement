@@ -1,0 +1,64 @@
+{% load static %}
+
+#form1 {
+}
+
+#form2 {
+  display: none;
+}
+
+#choice-student:checked ~ #form2 {
+  display: block;
+}
+
+body {
+  background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/static/images/school1.jpg');
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 10px 110px 30px 110px;
+  background-color: white;
+}
+
+.login-box {
+  width: 320px;
+  position: absolute;
+  background-color:  #f2f3f4 ;
+  top: 50%;
+  left: 50%;
+  box-sizing: padding-box;
+  transform: translate(-50%,-50%);
+}
+
+.btn {
+  margin-left: 0 50% 0 50%;
+  margin: auto;
+  width: 90%;
+}
+
+.input-box {
+  background-color:  #ebf5fb ;
+  margin: auto;
+  width: 90%;
+}
+
+::-webkit-input-placeholder {
+    color: #FF0000;
+    opacity: 1 !important; /* for older chrome versions. may no longer apply. */
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    color: #FF0000;
+    opacity: 1 !important;
+}
+
+:-ms-input-placeholder {
+   color: #FF0000;
+}

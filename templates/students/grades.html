@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% extends 'students/base.html' %}
+{% load teacher_extras %}
+{% load static %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'students/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<br>
+<div class="container table-container">
+  <div class="table-responsive-sm">
+    <h3 style="color:#0275d8; text-align:center; font-family: monospace;"> Class {{standard}} - RESULTS</h3>
+    <table class="grade-table table thead-light table-hover table-bordered">
+      <tr>
+        <th class="name-cell">Examinations</th>
+        {% for subject in subjects %}
+          <th>{{subject|title}}</th>
+        {% endfor %}
+      </tr>
+      {% for examination,list in results.items %}
+      <tr>
+        <td class="name-cell">{{examination.name}}</td>
+        {% for result in list %}
+          {% if result.marks_secured %}
+            <td>{{result.marks_secured}}</td>
+          {% endif %}
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'admins/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<br><br>
+<div class="container">
+  <h3 style="background-color:#2075d8;color:white;font-weight:bold">Student update form:</h3>
+    <form enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      {{form|crispy}}
+      <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

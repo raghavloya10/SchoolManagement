@@ -1,0 +1,17 @@
+{% extends 'teachers/base.html' %}
+{% block body_block%}
+  <br>
+  <div class="container">
+    <div class="jumbotron">
+      <h3>Teacher Information</h3>
+        <strong>Teacher name:</strong> {{teacher.user.first_name}} {{teacher.user.last_name}}<br><br>
+        <strong>Contact:</strong> {{teacher.user.contact_no}}<br><br>
+        <strong>Subjects and standards alloted:</strong><br>
+        <ul>
+          {% for subject in subjects %}
+            <li>{{subject.name|title}} to Class {{subject.standard}}</li><br>
+          {% endfor %}<br>
+        </ul><br>
+    </div>
+  </div>
+{% endblock %}

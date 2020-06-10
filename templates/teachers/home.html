@@ -1,0 +1,16 @@
+{% extends 'teachers/base.html' %}
+{% block body_block %}
+  <h3>You teach the following subjects to the following classes.</h3>
+  <h4>Click on them to upload the results</h4>
+  {% for subject in subjects_cp %}
+    <a href="{% url 'teachers:update_result' slug=subject.slug %}">{{subject.name}} to class {{subject.standard}}</a><br>
+  {% endfor %}
+  {% if class_teacher %}
+    <br><br>
+    <!-- <h3>You are also a class teacher of standard {{class_teacher.standard}}. Click
+      <a href="{% url 'standards:class_teacher_home' %}">here</a>
+      to view the marks secured by the students in the examinations.
+    </h3> -->
+  {% endif %}
+  <br><br>
+{% endblock %}

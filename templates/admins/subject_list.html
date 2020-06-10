@@ -1,0 +1,42 @@
+
+{% extends 'admins/base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'admins/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<br><br>
+<div class="container">
+    <div data-spy="scroll" class="container panel-body">
+      <table class="upload-table table student-update-table thead-dark table-hover table-bordered"
+              style="text-align:center;">
+        <tr>
+          <td colspan="3" style="color:white;background-color:#2075d8;">
+            <h3 style="font-weight:bold">Standard-{{standard}} : List of subjects</h3>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+          <th>S.No</th>
+          <th>Subject</th>
+          <th>Teacher</th>
+        </tr>
+        {% for subject in subjects %}
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td>
+            <a class="" href="">{{subject|title}}</a>
+          </td>
+          <td>
+            <a class="" href="#">{{subject.teacher}}</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock %}

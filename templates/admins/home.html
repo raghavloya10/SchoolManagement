@@ -1,0 +1,36 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'admins/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<div class="container">
+  <form method="post" enctype="multipart/form-data" name="form1" id="form1">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="radio" name="role" value="Teacher" id="choice-teacher">
+    <label for="choice-teacher">Teacher</label>
+    <input type="radio" name="role" value="Student" id="choice-student" checked>
+    <label for="choice-student">Student</label><br><br>
+    <div id="form2">
+      <form class="" id="form2" name="form2" method="post">
+        {{ studentForm|crispy }}
+      </form>
+    </div>
+    <input type="submit" class="submit-button btn btn-primary btn-block" onclick="submitForms()" name="" value="Submit">
+  </form>
+  <script type="text/javascript">
+    submitForms = function(){
+      document.forms["form1"].submit();
+      document.forms["form2"].submit();
+  }
+  </script>
+</div>
+{% endblock %}

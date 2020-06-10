@@ -1,0 +1,82 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+{% load teacher_extras %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Student</title>
+  <link rel="stylesheet" href="{% static 'teachers/style.css' %}">
+
+</head>
+<body>
+  <!-- <img class="logo" src="{% static 'images/fchs.png' %}" alt=""> -->
+
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-primary">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Hello {{teacher_cp.user.first_name}} {{teacher_cp.user.second_name}}</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Calendar</a>
+          </li>
+
+          <li class="nav-item active dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Update Result
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% for subject in subjects_cp %}
+                <a class="nav-link dropdown-item" href="{% url 'teachers:update_result' slug=subject.slug %}">{{subject.name|title}} ({{subject.standard}})</a>
+              {% endfor %}
+            </div>
+          </li>
+
+          <li class="nav-item active dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Upload
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% for subject in subjects_cp %}
+                <a class="nav-link dropdown-item" href="{% url 'teachers:upload' slug=subject.slug %}">{{subject.name|title}} ({{subject.standard}})</a>
+              {% endfor %}
+            </div>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'teachers:profile' slug=teacher_cp.slug %}">Profile</a>
+          </li>
+
+            {% if teacher_cp.is_class_teacher %}
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'standards:class_teacher_home' %}">My class</a>
+            </li>
+            {% endif %}
+
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+  {% block body_block %}
+  {% endblock %}
+
+</body>
+</html>

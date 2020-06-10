@@ -1,0 +1,47 @@
+body {
+}
+
+.logo {
+  width: 100%;
+  height: 100px;
+}
+
+.navbar #navbarNav .navbar-nav li a:hover {
+    background-color: white; /*BACKGROUND color for active*/
+    color: #0275d8;
+}
+
+.navbar-brand {
+  margin-left: 8px;
+}
+
+.dropdown:hover .dropdown-menu{
+  display: block;
+  background-color: #0275d8;
+}
+
+.dropdown:hover .dropdown-item{
+  color: white;
+}
+
+#form2 {
+  display: none;
+}
+
+#choice-student:checked ~ #form2 {
+  display: block;
+}
+
+.upload-table tr th {
+  background-color: #2075d8;
+  color: white;
+}
+
+.table-heading {
+  background-color: #2075d8;
+  color: white;
+}
+
+.accordion {
+  margin-top: 0;
+}

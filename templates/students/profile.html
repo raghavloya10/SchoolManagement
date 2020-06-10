@@ -1,0 +1,88 @@
+{% extends 'students/base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'students/style.css' %}">
+{% endblock %}
+
+{% block body_block%}
+  <div class="container profile-box">
+    <h4>Student Information</h4><br>
+    <table class="table thead-dark table-hover table-borderless">
+      <tr>
+        <td><strong>Student name:</strong></td>
+        <td>{{student.user.first_name}} {{student.user.last_name}}</td>
+      </tr>
+      <tr>
+        <td><strong>Email:</strong></td>
+        <td>{{student.user.email}}</td>
+      </tr>
+      <tr>
+        <td><strong>Permanent Address:</strong></td>
+        <td>{% if student.user.address %}
+              {{student.user.address}}
+            {% endif %}\</td>
+      </tr>
+      <tr>
+        <td><strong>Date of birth:</strong></td>
+        <td>{% if student.user.date_of_birth %}
+              {{student.user.date_of_birth}}
+            {% endif %}</td>
+      </tr>
+      <tr>
+        <td><strong>Father's Name:</strong></td>
+        <td>{% if student.father %}
+          {{student.father}}
+        {% endif %}</td>
+      </tr>
+      <tr>
+        <td><strong>Contact:</strong></td>
+        <td>{{student.user.contact_no}}</td>
+      </tr>
+      <tr>
+        <td><strong>Standards:</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Current standard:</strong></td>
+        <td>{{student.current_standard}}</td>
+      </tr>
+      <tr>
+        <td><strong>Roll No:</strong></td>
+        <td>{{student.roll_number}}</td>
+      </tr>
+      <tr>
+        <td><strong>Caste:</strong></td>
+        <td>{{student.caste}}</td>
+      </tr>
+      <tr>
+        <td><strong>Religion:</strong></td>
+        <td>{{student.religion}}</td>
+      </tr>
+      <tr>
+        <td><strong>Profile picture:</strong></td>
+        {% if student.user.profile_pic %}
+        <td><img src="{{student.user.profile_pic.url}}"
+                 alt="No profile pic"
+                 style="width:150px; height:150px;"><br><br>
+          {% if student.user == request.user %}
+          <a class="btn btn-primary"
+             href="#"
+             style="margin:auto auto; width:150px;">Change</a>
+          {% endif %}
+        </td>
+        {% else %}
+        <td>
+          <img src="{% static 'images/default_profile_pic.png' %}"
+               alt=""
+               style="width:150px; height:150px"><br>
+              {% if student.user == request.user %}
+               <a class="btn btn-primary"
+                  href="#"
+                  style="margin:auto auto; width:150px;">Upload</a>
+              {% endif %}
+        </td>
+        {% endif %}
+      </tr>
+    </table>
+  </div>
+{% endblock %}

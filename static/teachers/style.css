@@ -1,0 +1,54 @@
+.logo {
+  width: 100%;
+  height: 100px;
+}
+
+.navbar #navbarNav .navbar-nav li a:hover {
+    background-color: white; /*BACKGROUND color for active*/
+    color: #0275d8;
+}
+
+.navbar-brand {
+  margin-left: 8px;
+}
+
+.dropdown:hover .dropdown-menu{
+  display: block;
+  background-color: #0275d8;
+}
+
+.dropdown:hover .dropdown-item{
+  color: white;
+}
+
+.table {
+  text-align: center;
+
+}
+
+.btn {
+  margin-left: 40%;
+  width: 20%;
+}
+
+.marks-input {
+  width: 100%;
+  border: None;
+}
+
+.name-cell {
+  width: 200px;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+.table tr td::-webkit-outer-spin-button,
+.table tr td::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

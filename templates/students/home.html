@@ -1,0 +1,50 @@
+{% extends 'students/base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'students/style.css' %}">
+{% endblock %}
+
+{% block body_block%}
+  <br>
+  <div class="home-box">
+    <div class="announcements">
+      <h4 class="profile-headers">Announcements</h4>
+    </div>
+    <div class="uploads">
+      <h4 class="profile-headers">Uploads</h4>
+      <div class="accordion">
+      {% for subject,pdfs in uploads.items %}
+        <div class="card">
+          <div class="card-header" id="{{forloop.counter}}">
+            <h3 class="btn btn-link" data-target="#{{subject}}" data-toggle="collapse" aria-controls="{{subject}}">{{subject|title}}</h3>
+          </div>
+          <div id="{{subject}}" class="collapse" aria-labelledby="{{forloop.counter}}" data-parent=".accordion">
+            <div data-spy="scroll" class="container panel-body">
+              <table class="table upload-table thead-dark table-hover table-bordered"
+                      style="text-align:center;">
+                <tr>
+                  <th style="width:40%">Title</th>
+                  <th style="">Type</th>
+                  <th>Date uploaded</th>
+                </tr>
+                {% for pdf in pdfs %}
+                <tr>
+                  <td>
+                    <a class=""
+                       href="{{pdf.pdf.url}}"
+                       target="_blank">{{pdf.title}}</a>
+                  </td>
+                  <td>{{pdf.type}}</td>
+                  <td>{{pdf.timestamp}}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
