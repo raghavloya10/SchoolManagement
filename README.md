@@ -14,7 +14,7 @@ To get started...
     6. python manage.py runserver         (To get the server up and running)
     
 - Open any web browser and type the following url:
-    http://localhost:2000 (To get to login page)
-    http://localhost:2000/db (To get access to database after typing the credentials for superuser)
+    http://localhost:8000 (To get to login page)
+    http://localhost:8000/db (To get access to database after typing the credentials for superuser)
     
     
