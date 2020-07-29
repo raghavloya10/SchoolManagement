@@ -11,7 +11,8 @@
 {% endblock %}
 
 {% block body_block %}
-<div class="container">
+<hr class='hr-text' data-content="New User Signup Form"> <br>
+<div class="container jumbotron" style="padding: 20px 30px;">
   <form method="post" enctype="multipart/form-data" name="form1" id="form1">
     {% csrf_token %}
     {{ form|crispy }}

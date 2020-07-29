@@ -1,28 +1,27 @@
 {% extends 'teachers/base.html' %}
 {% load teacher_extras %}
 {% block body_block %}
-<br><br>
+<hr class='hr-text' data-content="Update Standard {{subject.standard}}: {{subject|title}} Results"> <br>
   <div class="container">
-    <h2>{{subject.name|title}} - {{subject.standard}}</h2><br><br>
     <form class="result-form" action="" method="post">
       {% csrf_token %}
       <div class="table-responsive-sm">
-        <table class="table thead-dark table-hover table-bordered">
-            <tr>
-              <th>Roll no</th>
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+              <th style="width: 9ch;">Roll no</th>
               <th class="name-cell">Name</th>
               {% for examination in examinations %}
-                <th>{{examination.name}}</th>
+                <th style="width: 4ch;">{{examination.name}}</th>
               {% endfor %}
-            </tr>
+            </thead>
           {% for student,examination in results.items %}
               <tr>
-                <td>{{student.roll_number}}</td>
+                <td style="width: 9ch;">{{student.roll_number}}</td>
                 <td class="name-cell">
-                  <a href="{% url 'students:profile' slug=student.slug %}">{{student.user.first_name}} {{student.user.last_name}}</a>
+                  {{student.user.first_name}} {{student.user.last_name}}
                 </td>
                 {% for examination,result in examination.items %}
-                  <td>
+                  <td style="width: 4ch;">
                     {% with ans=student.roll_number|myConcat:examination.name %}
                       <input type="number"
                               class="marks-input"
@@ -34,7 +33,7 @@
               </tr>
           {% endfor %}
         </table>
-        <input class="btn btn-primary" type="submit" name="" value="Submit"/>
+        <input class="btn btn-primary" style="margin-left: 50%; width: 150px;" type="submit" name="" value="Upload"/>
       </div>
     </form>
   </div>

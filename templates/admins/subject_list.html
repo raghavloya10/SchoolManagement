@@ -13,7 +13,7 @@
       <table class="upload-table table student-update-table thead-dark table-hover table-bordered"
               style="text-align:center;">
         <tr>
-          <td colspan="3" style="color:white;background-color:#2075d8;">
+          <td colspan="4" style="color:white;background-color:#2075d8;">
             <h3 style="font-weight:bold">Standard-{{standard}} : List of subjects</h3>
           </td>
         </tr>
@@ -23,16 +23,20 @@
         <tr>
           <th>S.No</th>
           <th>Subject</th>
-          <th>Teacher</th>
+          <th>Teacher (Click to update teacher profile)</th>
+          <th>Update</th>
         </tr>
         {% for subject in subjects %}
         <tr>
           <td>{{forloop.counter}}</td>
           <td>
-            <a class="" href="">{{subject|title}}</a>
+            <p>{{subject|title}}</p>
           </td>
           <td>
-            <a class="" href="#">{{subject.teacher}}</a>
+            <a class="" href="{% url 'admins:teacher_update' slug=subject.teacher.slug %}">{{subject.teacher}}</a>
+          </td>
+          <td>
+            <a class="btn btn-success" href="{% url 'admins:subject_update' slug=subject.slug %}">Update</a>
           </td>
         </tr>
         {% endfor %}

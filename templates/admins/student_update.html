@@ -7,13 +7,13 @@
 {% endblock %}
 
 {% block body_block %}
-<br><br>
-<div class="container">
-  <h3 style="background-color:#2075d8;color:white;font-weight:bold">Student update form:</h3>
+<hr class='hr-text' data-content="Update Student's Profile"> <br>
+<div class="container jumbotron" style="padding: 20px 30px;">
     <form enctype="multipart/form-data" method="post">
       {% csrf_token %}
+      {{userform|crispy}}
       {{form|crispy}}
-      <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+      <input class="btn btn-primary btn-block" type="submit" name="submit" value="Submit">
     </form>
 </div>
 {% endblock %}

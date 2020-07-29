@@ -59,9 +59,12 @@ body {
   width: 98%;
   margin: auto;
   font-size: 13px;
+
 }
 
 .calendar tr, .calendar td {
+  color: white;
+  background-color: gray;
   border: 1px solid black;
 }
 
@@ -85,12 +88,7 @@ body {
   font-size: 16px;
 }
 
-.broadcast {
-  position: absolute;
-  left: -160px;
-  top: 440px;
-  border: 1px solid #17a2b8;
-}
+
 
 ul {
   height: 100%;

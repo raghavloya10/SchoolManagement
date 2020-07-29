@@ -1,17 +1,70 @@
 {% extends 'teachers/base.html' %}
-{% block body_block%}
-  <br>
-  <div class="container">
-    <div class="jumbotron">
-      <h3>Teacher Information</h3>
-        <strong>Teacher name:</strong> {{teacher.user.first_name}} {{teacher.user.last_name}}<br><br>
-        <strong>Contact:</strong> {{teacher.user.contact_no}}<br><br>
-        <strong>Subjects and standards alloted:</strong><br>
-        <ul>
+{% load static %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'students/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+  <div class="container profile-box">
+      <h4>Teacher Profile</h4>
+    <table class="table thead-dark table-hover table-borderless" style="text-align:left">
+      <tr>
+        <td><strong>Teacher name:</strong></td>
+        <td>{{teacher.user.get_full_name}}</td>
+      </tr>
+      <tr>
+        <td><strong>Email:</strong></td>
+        <td>{{teacher.user.email}}</td>
+      </tr>
+      <tr>
+        <td><strong>Date of birth:</strong></td>
+        <td>{% if teacher.user.date_of_birth %}
+              {{teacher.user.date_of_birth}}
+            {% endif %}</td>
+      </tr>
+      <tr>
+        <td><strong>Contact no:</strong></td>
+        <td>{% if teacher.user.contact_no %}
+              {{teacher.user.contact_no}}
+            {% endif %}</td>
+      </tr>
+      <tr>
+        <td><strong>Permanent Address:</strong></td>
+        <td>{% if teacher.user.address %}
+              {{teacher.user.address}}
+            {% endif %}</td>
+      </tr>
+      <tr>
+        <td><strong>Currently teaching:</strong></td>
+        <td>
           {% for subject in subjects %}
-            <li>{{subject.name|title}} to Class {{subject.standard}}</li><br>
-          {% endfor %}<br>
-        </ul><br>
+            {{subject|title}} to Standard: {{subject.standard}} <br>
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Profile picture:</strong></td>
+        {% if teacher.user.profile_pic %}
+        <td><img src="{{teacher.user.profile_pic.url}}"
+                 alt="No profile pic"
+                 style="width:150px; height:150px; margin-bottom:5px"><br>
+            <a class="btn btn-primary"
+                  href="{% url 'teachers:profile_pic_update' %}"
+                  style="margin:auto auto; width:150px;">Update</a>
+        {% else %}
+        <td>
+          <img src="{% static 'images/default_profile_pic.png' %}"
+               alt=""
+               style="width:150px; height:150px"><br>
+          <a class="btn btn-primary"
+                  href="{% url 'teachers:profile_pic_update' %}"
+                  style="margin:auto auto; width:150px;">Upload</a>
+        {% endif %}
+               
+        </td>
+      </tr>
+    </table>
     </div>
   </div>
 {% endblock %}

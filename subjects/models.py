@@ -24,7 +24,7 @@ class Subject(models.Model):
         return self.name.name
 
     def __str__(self):
-        return "{} - {}".format(self.name, self.standard)
+        return self.name.name
 
 def slug_generator(sender, instance, *args, **kwargs):
     if not instance.slug:

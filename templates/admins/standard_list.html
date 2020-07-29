@@ -7,24 +7,16 @@
 {% endblock %}
 
 {% block body_block %}
-<br><br>
+<hr class='hr-text' data-content="Standards"> <br>
 <div class="container">
     <div data-spy="scroll" class="container panel-body">
       <table class="upload-table table student-update-table thead-dark table-hover table-bordered"
               style="text-align:center;">
         <tr>
-          <td colspan="4" style="color:white;background-color:#2075d8;">
-            <h3 style="font-weight:bold">STANDARDS:</h3>
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-        </tr>
-        <tr>
           <th>Standard</th>
           <th>StudentList</th>
           <th>SubjectList</th>
-          <th>Update students</th>
+          <th>Class Teacher (Click to update)</th>
         </tr>
         {% for standard in standards %}
         <tr>
@@ -36,7 +28,7 @@
             <a class="" href="{% url 'admins:subject_list' slug=standard.slug %}">List of subjects</a>
           </td>
           <td>
-            <a class="" href="#">Update students</a>
+            <a class="" href="{% url 'admins:class_teacher_update' slug=standard.slug %}">{{standard.class_teacher.teacher}}</a>
           </td>
         </tr>
         {% endfor %}

@@ -9,7 +9,7 @@
 <br>
 <div class="container table-container">
   <div class="table-responsive-sm">
-    <h3 style="color:#0275d8; text-align:center; font-family: monospace;"> Class {{standard}} - RESULTS</h3>
+      <hr class='hr-text' data-content="Class {{standard}} - RESULTS"> <br>
     <table class="grade-table table thead-light table-hover table-bordered">
       <tr>
         <th class="name-cell">Examinations</th>
@@ -23,22 +23,22 @@
         {% for result in list %}
           {% if result.marks_secured %}
             <td>{{result.marks_secured}}</td>
+          {% else %}
+            <td>-</td>
           {% endif %}
         {% endfor %}
       </tr>
       {% endfor %}
     </table>
   </div>
-</div><br>
+</div><br> <br>
 <div class="container gb-box">
   <div class="table-responsive-sm">
+      <hr class='hr-text' data-content="Past grades"> <br>
     <table class="gb-table table thead-light table-hover table-bordered">
-      <tr>
-        <th>List of standards:</th>
-      </tr>
       {% for standard in standards %}
       <tr>
-        <td><h4><a href="{% url 'students:grades' slug=standard.slug %}">{{standard.name}}</a></h4></td>
+        <td><a class="btn btn-block text-bold blue-color" style="font-size: 20px; back" href="{% url 'students:grades' slug=standard.slug %}">Standard {{standard.name}}</a></td>
       </tr>
       {% endfor %}
     </table>

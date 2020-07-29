@@ -15,8 +15,8 @@ class Event(models.Model):
 
     @property
     def get_html_url(self):
-        url = reverse('students:event_edit', args=(self.id,))
-        return f"<a href={url}> {self.title} </a>"
+        url = reverse('students:event_edit', args=(self.slug,))
+        return f"<a href={url}> {self.title} (self) </a>"
 
 def slug_generator(sender, instance, *args, **kwargs):
     if not instance.slug:

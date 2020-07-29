@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from standards.models import Standard
 from accounts.models import User
@@ -25,11 +26,12 @@ RELIGION_CHOICES = (
 )
 
 class Student(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE,editable=False)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     standards = models.ManyToManyField(Standard)
     current_standard = models.ForeignKey(Standard,related_name='Class',on_delete=models.CASCADE,null=True,blank=True)
     roll_number = models.PositiveIntegerField()
-    timestamp = models.DateTimeField(auto_now_add =True,editable=False)
+    created_at = models.DateTimeField(auto_now_add=True,editable=False)
+    updated_at = models.DateTimeField(auto_now=True,editable=False)
     admission_no = models.CharField(max_length=20)
     father = models.CharField(max_length=200)
     slug = models.SlugField(max_length=210,blank=True,null=True,editable=False)

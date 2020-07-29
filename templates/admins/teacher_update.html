@@ -1,0 +1,19 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'admins/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<hr class='hr-text' data-content="Update Teacher's Profile"> <br>
+<div class="container jumbotron" style="padding: 20px 30px;">
+    <form enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      {{userform|crispy}}
+      {{form|crispy}}
+      <input class="btn btn-primary btn-block" type="submit" name="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

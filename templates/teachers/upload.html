@@ -1,36 +1,45 @@
 {% extends 'teachers/base.html' %}
 {% load crispy_forms_tags %}
 {% block body_block %}
-  <h2>Upload</h2>
-  <form class="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form|crispy}}
-    <input type="submit" name="" value="submit">
-  </form>
-  <div class="table-responsive-sm">
+
+<hr class='hr-text' data-content="Upload File for Standard {{subject.standard}}: {{subject|title}}"> <br>
+<div class="container"> 
+  <div class="jumbotron" style="padding: 20px 30px;">
+    <form class="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{form|crispy}}
+      <input type="submit" class="btn btn-primary btn-block" value="Upload">
+    </form>
+  </div> <br>
+  <hr class='hr-text' data-content="Files uploaded"> <br>
     <table class="table thead-dark table-hover table-bordered">
-      <tr>
-        <th style="width:40%">Title</th>
-        <th style="">Date published</th>
-        <th></th>
-        <th></th>
+      <tr class="thead-dark">
+        <th>Title</th>
+        <th>Uploaded at</th>
+        <th>Delete</th>
       </tr>
+      <tbody>
       {% for pdf in pdfs %}
       <tr>
-        <td><a class="btn btn-primary btn-block"
+        <td><a class=""
                href="{{pdf.pdf.url}}"
                style="margin:auto;"
                target="_blank">{{pdf.title}}</a></td>
         <td>{{pdf.timestamp}}</td>
-        <td></td>
         <td>
-          <form class="" action="{% url 'teachers:delete_upload' slug=pdf.slug %}" method="post">
+          <form class="form"  onSubmit="return confirm('Are you sure you wish to delete?');" action="{% url 'teachers:delete_upload' slug=pdf.slug %}" method="post">
             {% csrf_token %}
             <button class="btn btn-danger" type="submit">Delete</button>
           </form>
         </td>
       </tr>
       {% endfor %}
+      {% if pdfs|length == 0 %}
+        <tr>
+          <td colspan="3">No files uploaded yet!</td> 
+        </tr>
+      {% endif %}
+      </tbody>
     </table>
-  </div>
+</div>
 {% endblock %}

@@ -3,6 +3,7 @@ from accounts.models import User
 from standards.models import Standard
 from students.models import Student
 from teachers.models import Teacher
+from standards.models import ClassTeacher
 from django.contrib.auth import authenticate,logout,login
 
 class UserSignupForm(forms.ModelForm):
@@ -48,13 +49,32 @@ class StudentExtraForm(forms.ModelForm):
             student.save()
         return student
 
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email','date_of_birth','address','contact_no','profile_pic')
+
 class StudentUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        exclude = ('user',)
+        fields = ('father','caste','religion','admission_no','current_standard','roll_number','standards')
+
+class TeacherUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Teacher
+        fields = ("__all__")
 
 class RefreshStandardForm(forms.Form):
     students = forms.ModelMultipleChoiceField(queryset=Student.objects.all().order_by('current_standard'),
                                               widget=forms.CheckboxSelectMultiple,
                                               label='Select all the students to be enrolled in the standard:')
+
+class SubjectUpdateForm(forms.Form):
+    teacher = forms.ModelChoiceField(queryset=Teacher.objects.all(),
+                                    label='Select a teacher:')
+
+class ClassTeacherUpdateForm(forms.Form):
+    teacher = forms.ModelChoiceField(queryset=Teacher.objects.all(),
+                                    label='Select the class teacher:')

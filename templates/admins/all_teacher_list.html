@@ -1,0 +1,25 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'admins/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<hr class='hr-text' data-content="View Teacher's Profile"> <br>
+<div class="container">
+    <form class="student-list-form" method="post">
+      {% csrf_token %}
+      <label for="teachers">Teacher email: </label>
+      <input type="email" class="form-control" list="teacher-emails" id="teachers" name="stud">
+      <datalist id="teacher-emails">
+        {% for teacher in teachers %}
+            <option value="{{teacher.user.email}}">{{teacher.user.get_full_name}}</option>
+        {% endfor %}
+      </datalist> <br>
+      <input class="btn btn-primary btn-block" type="submit" name="submit" value="View teacher's profile">
+    </form>
+  </div>
+</div>
+{% endblock %}

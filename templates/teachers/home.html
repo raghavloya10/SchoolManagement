@@ -1,16 +1,17 @@
 {% extends 'teachers/base.html' %}
 {% block body_block %}
-  <h3>You teach the following subjects to the following classes.</h3>
-  <h4>Click on them to upload the results</h4>
+
+<div class="container jumbotron" style="height: 100%;">
+  <h3>You teach: </h3> <br>
+  <table class="table table-striped">
   {% for subject in subjects_cp %}
-    <a href="{% url 'teachers:update_result' slug=subject.slug %}">{{subject.name}} to class {{subject.standard}}</a><br>
+  <tr>
+    <td><a class="btn btn-secondary" href="{% url 'teachers:update_result' slug=subject.slug %}">Update Result</a></td>
+    <td style="font-size: large; vertical-align: middle;">{{subject.name|title}} to class {{subject.standard}}</td>
+    <td><a class="btn btn-warning" href="{% url 'teachers:upload' slug=subject.slug %}">Upload file</a></td>
+  </tr>
   {% endfor %}
-  {% if class_teacher %}
-    <br><br>
-    <!-- <h3>You are also a class teacher of standard {{class_teacher.standard}}. Click
-      <a href="{% url 'standards:class_teacher_home' %}">here</a>
-      to view the marks secured by the students in the examinations.
-    </h3> -->
-  {% endif %}
-  <br><br>
+  </table>
+</div>
+  
 {% endblock %}

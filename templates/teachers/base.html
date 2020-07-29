@@ -12,9 +12,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Student</title>
+  <title>Teacher</title>
   <link rel="stylesheet" href="{% static 'teachers/style.css' %}">
-
+  <link rel="stylesheet" href="{% static 'general.css' %}">
+  {% block stylesheets %}
+  
+  {% endblock stylesheets %}
 </head>
 <body>
   <!-- <img class="logo" src="{% static 'images/fchs.png' %}" alt=""> -->
@@ -29,18 +32,14 @@
         <ul class="navbar-nav ml-auto">
 
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Calendar</a>
+            <a class="nav-link" href="{% url 'teachers:home' %}">Home <span class="sr-only">(current)</span></a>
           </li>
 
           <li class="nav-item active dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Update Result
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               {% for subject in subjects_cp %}
                 <a class="nav-link dropdown-item" href="{% url 'teachers:update_result' slug=subject.slug %}">{{subject.name|title}} ({{subject.standard}})</a>
               {% endfor %}
@@ -61,10 +60,9 @@
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'teachers:profile' slug=teacher_cp.slug %}">Profile</a>
           </li>
-
-            {% if teacher_cp.is_class_teacher %}
+            {% if request.user.teacher.class_teacher %}
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'standards:class_teacher_home' %}">My class</a>
+              <a class="nav-link" href="{% url 'teachers:class_teacher_home' %}">My class</a>
             </li>
             {% endif %}
 
@@ -73,7 +71,7 @@
           </li>
         </ul>
       </div>
-    </nav>
+    </nav> <br>
 
   {% block body_block %}
   {% endblock %}

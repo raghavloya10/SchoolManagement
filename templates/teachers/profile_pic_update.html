@@ -1,0 +1,14 @@
+{% extends 'teachers/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+<hr class='hr-text' data-content="Update Profile Pic"> <br>
+<div class="container jumbotron" style="padding: 30px 20px;">
+    <form enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      {{form|crispy}}
+      <input class="btn btn-primary btn-block" type="submit" name="submit" value="Update">
+    </form>
+</div>
+{% endblock %}

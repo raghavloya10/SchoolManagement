@@ -7,14 +7,12 @@
 {% endblock %}
 
 {% block body_block %}
-<br>
-<div class="container">
-  <div class="jumbotron">
-    <h3 style="font-weight:bold">Standard: {{standard}}</h3><br>
+<hr class='hr-text' data-content="Standard: {{standard}}"> <br>
+<div class="container jumbotron" style="padding: 20px 30px;">
     <form class="student-list-form" method="post">
       {% csrf_token %}
       {{form|crispy}}
-      <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+      <input class="btn btn-primary btn-block" type="submit" name="submit" value="Submit">
     </form>
   </div>
 </div>

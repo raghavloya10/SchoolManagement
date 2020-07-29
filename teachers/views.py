@@ -18,6 +18,7 @@ from standards.models import Standard, ClassTeacher
 from accounts.models import User
 
 from .forms import UploadFileForm
+from students.forms import ProfilePicUpdateForm
 
 class TeacherTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'teachers/home.html'
@@ -42,6 +43,7 @@ class TeacherTemplateView(LoginRequiredMixin, TemplateView):
             context['class_teacher'] = ""
         return context
 
+@login_required
 def teacher_profile_view(request,slug):
     teacher = Teacher.objects.get(slug=slug)
     subjects = Subject.objects.filter(teacher=teacher)
@@ -98,3 +100,44 @@ def upload_file(request):
         fs = FileSystemStorage()
         fs.save(upload_file.name, upload_file)
     return render(request,'teachers/upload.html',{'form':form})
+
+@login_required
+def class_teacher_home(request):
+    if not request.user.teacher.class_teacher:
+        return HttpResponse("<h1>You are not allowed to access the given details<h1>")
+    teacher = request.user.teacher
+    students = Student.objects.filter(current_standard=teacher.class_teacher.standard)
+    return render(request,'standards/class_teacher_home.html',{'students':students})
+
+@login_required
+def student_grade_view(request,slug):
+    student = Student.objects.get(slug=slug)
+    standard = student.current_standard
+    examinations = Examination.objects.filter(standard=standard)
+    results = {}
+    for examination in examinations:
+        results[examination] = Result.objects.filter(student=student,examination=examination).order_by('subject')
+    subjects = Subject.objects.filter(standard=standard)
+    for result in results[examinations[0]]:
+        subjects.append(result.subject)
+    dict = {
+        'student':student,
+        'standard':standard,
+        'results':results,
+        'examinations':examinations,
+        'subjects':subjects
+    }
+    return render(request,'students/grades.html',dict)
+
+@login_required
+def profile_pic_update_view(request):
+    user = request.user
+    if not user.is_teacher:
+        return HttpResponse('<h1>Invalid request</h1>')
+    teacher = user.teacher
+    if request.method == 'POST':
+        form = ProfilePicUpdateForm(request.POST, request.FILES,instance=user)
+        form.save()
+        return redirect('teachers:profile',slug=teacher.slug)
+    form = ProfilePicUpdateForm(instance=user)
+    return render(request,'teachers/profile_pic_update.html',{'form':form })

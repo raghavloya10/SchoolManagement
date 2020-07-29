@@ -92,28 +92,3 @@
   width: 90%;
   margin: auto;
 }
-
-.accordion {
-  margin-top: 0;
-}
-
-.uploads {
-  transition: transform .2s;
-  overflow: auto;
-  width: 90%;
-  margin: auto auto;
-  background-color: white;
-}
-
-.upload-table tr th {
-  background-color: #2075d8;
-  color: white;
-}
-
-.announcements:hover {
-  transform: scale(1.1);
-}
-
-.uploads:hover {
-  transform: scale(1.1);
-}

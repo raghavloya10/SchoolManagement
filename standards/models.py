@@ -17,8 +17,8 @@ def slug_generator(sender, instance, *args, **kwargs):
 pre_save.connect(slug_generator,sender=Standard)
 
 class ClassTeacher(models.Model):
-    standard = models.ForeignKey(Standard,on_delete=models.CASCADE)
-    teacher = models.ForeignKey(Teacher,on_delete=models.CASCADE)
+    standard = models.OneToOneField(Standard,on_delete=models.CASCADE,related_name="class_teacher",blank=True,null=True)
+    teacher = models.OneToOneField(Teacher,on_delete=models.CASCADE,related_name="class_teacher",blank=True,null=True)
 
     def __str__(self):
         return "{} - {}".format(self.standard, self.teacher)

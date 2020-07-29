@@ -1,30 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  {% if teacher.is_class_teacher %}
-    <h1>Standard: {{standard.name}}</h1>
-    <h3>Class teacher: {{class_teacher}}</h3>
-    <table>
-      <tr>
-        <th>Roll no</th>
-        <th>Name</th>
-        <th>Contact number</th>
-      </tr>
-      {% for student in students %}
-      <tr>
-        <td>{{student.roll_number}}</td>
-        <td>{{student.user.first_name}} {{student.user.last_name}}</td>
-        <td>{{student.user.contact_no}}</td>
-      </tr>
-      {% endfor %}
-    </table>
-  {% endif %}
-  <a href="{% url 'accounts:logout' %}">Logout</a>
-</body>
-</html>
+{% extends 'teachers/base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'students/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<br>
+<h3 style="text-align: center; margin: 20px 20px; font-weight: bold; text-decoration: underline;">LIST OF STUDENTS</h3> 
+<div class="container">
+    <div data-spy="scroll" class="container panel-body">
+      <table class="table thead-dark table-hover table-bordered" style="text-align:center;">
+        <tr>
+          <th>Roll no</th>
+          <th>Name</th>
+          <th>Contact no</th>
+          <th>View results</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+          <td>{{student.roll_number}}</td>
+          <td>
+            <p>{{student.user.first_name}} {{student.user.last_name}}</p>
+          </td>
+          <td>
+            <p>{{student.user.contact_no}}</p>
+          </td>
+          <td>
+            <a class="btn btn-primary btn-block" href="{% url 'teachers:student_grade' slug=student.slug %}">view results</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock %}

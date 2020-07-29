@@ -4,9 +4,9 @@ from accounts.utils import unique_email_slug_generator
 from django.db.models.signals import pre_save
 
 class Teacher(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
-    is_class_teacher = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add =True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,related_name="teacher")
+    created_at = models.DateTimeField(auto_now_add=True,editable=False)
+    updated_at = models.DateTimeField(auto_now=True,editable=False)
     slug = models.SlugField(max_length=210,blank=True,null=True, editable=False)
 
     class Meta:

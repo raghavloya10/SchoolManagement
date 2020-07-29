@@ -12,6 +12,8 @@ urlpatterns = [
     path('update_result/<slug:slug>/',views.class_result_update,name='update_result'),
     path('upload/<slug:slug>/',upload_views.upload_view,name='upload'),
     path('upload/delete/<slug:slug>/',upload_views.delete_view,name='delete_upload'),
+    path('class_teacher_home/',views.class_teacher_home,name="class_teacher_home"),
+    path('profile_pic_update/',views.profile_pic_update_view,name='profile_pic_update'),
 
-    # path('class_teacher_home/<int:pk>',views.class_teacher_view,name='class_teacher_home')
+    path('class_teacher/student_grade/<slug:slug>/',views.student_grade_view,name="student_grade")
 ]

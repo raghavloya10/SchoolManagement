@@ -32,6 +32,33 @@ class CalendarView(generic.ListView):
         context['next_month'] = next_month(d)
         return context
 
+@login_required
+def student_calendar(request):
+    if not request.user.is_student:
+        return HttpResponse("<h1>UNAUTHORISED</h1>")
+    d = get_date(request.GET.get('month', None))
+    cal = Calendar(d.year, d.month, request.user)
+    html_cal = cal.formatmonth(withyear=True)
+    context={}
+    context['calendar'] = mark_safe(html_cal)
+    context['prev_month'] = prev_month(d)
+    context['next_month'] = next_month(d)
+    return render(request,"students/calendar.html",context)
+
+@login_required
+def admin_calendar(request):
+    if not request.user.is_admin:
+        return HttpResponse("<h1>UNAUTHORISED</h1>")
+    d = get_date(request.GET.get('month', None))
+    cal = Calendar(d.year, d.month, request.user)
+    html_cal = cal.formatmonth(withyear=True)
+    context={}
+    context['calendar'] = mark_safe(html_cal)
+    context['prev_month'] = prev_month(d)
+    context['next_month'] = next_month(d)
+    return render(request,"admins/calendar.html",context)
+
+
 def get_date(req_day):
     if req_day:
         year, month = (int(x) for x in req_day.split('-'))
@@ -52,19 +79,40 @@ def next_month(d):
     return month
 
 @login_required
-def event(request, event_slug=None):
+def event(request, slug=None):
     instance = Event()
-    if event_slug:
-        instance = get_object_or_404(Event, slug=event_id)
+    if slug:
+        type = 'delete'
+        instance = Event.objects.get(slug=slug)
+        if not request.user.is_admin and instance.user != request.user:
+            return HttpResponse("<h1>UNAUTHORISED</h1>")
     else:
+        type = None
         instance = Event()
 
     form = EventForm(request.POST or None, instance=instance)
     if request.POST and form.is_valid():
         event = form.save(commit=False)
         event.user = request.user
-        if request.POST.get('broadcast') is not None:
-            event.broadcast = True
         event.save()
+        if request.user.is_admin:
+            return redirect('admins:calendar')
+        if request.user.is_student:
+            return redirect('students:calendar')
+    if request.user.is_admin:
+        return render(request,'admins/event.html',{'form':form,'type':type,'slug':slug})
+    if request.user.is_student:
+        return render(request, 'students/event.html', {'form': form,'type':type,'slug':slug})
+
+@login_required
+def event_delete(request, slug):
+    instance = Event.objects.get(slug=slug)
+    if not request.user.is_admin and instance.user != request.user:
+        return HttpResponse("<h1>UNAUTHORISED</h1>")
+
+    instance.delete()
+
+    if request.user.is_admin:
+        return redirect('admins:calendar')
+    if request.user.is_student:
         return redirect('students:calendar')
-    return render(request, 'students/event.html', {'form': form})

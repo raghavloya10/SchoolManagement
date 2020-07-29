@@ -7,7 +7,7 @@
 
 {% block body_block%}
   <div class="container profile-box">
-    <h4>Student Information</h4><br>
+    <h4>Teacher Profile</h4>
     <table class="table thead-dark table-hover table-borderless">
       <tr>
         <td><strong>Student name:</strong></td>
@@ -63,26 +63,27 @@
         {% if student.user.profile_pic %}
         <td><img src="{{student.user.profile_pic.url}}"
                  alt="No profile pic"
-                 style="width:150px; height:150px;"><br><br>
-          {% if student.user == request.user %}
-          <a class="btn btn-primary"
-             href="#"
-             style="margin:auto auto; width:150px;">Change</a>
-          {% endif %}
-        </td>
+                 style="width:150px; height:150px; margin-bottom:5px"><br>
         {% else %}
         <td>
           <img src="{% static 'images/default_profile_pic.png' %}"
                alt=""
                style="width:150px; height:150px"><br>
-              {% if student.user == request.user %}
-               <a class="btn btn-primary"
-                  href="#"
-                  style="margin:auto auto; width:150px;">Upload</a>
-              {% endif %}
-        </td>
         {% endif %}
+          {% if student.user == request.user %}
+               <a class="btn btn-primary"
+                  href="{% url 'students:profile_pic_update' %}"
+                  style="margin:auto auto; width:150px;">Upload</a>
+          {% endif %}
+        </td>
       </tr>
+      {% if request.user.admin %}
+      <tr>
+        <td colspan="2" style="text-align: center;">
+          <a class="btn btn-success" href="{% url 'admins:student_update' slug=student.slug %}">Update Profile</a>
+        </td>
+      </tr>
+      {% endif %}
     </table>
   </div>
 {% endblock %}

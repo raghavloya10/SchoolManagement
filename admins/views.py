@@ -17,10 +17,10 @@ from standards.models import Standard, ClassTeacher
 from accounts.models import User
 from uploads.models import Upload
 
-from .forms import (UserSignupForm,
-                    StudentExtraForm,
-                    StudentUpdateForm,
-                    RefreshStandardForm)
+from .forms import (UserSignupForm, StudentExtraForm,
+                    StudentUpdateForm, RefreshStandardForm,
+                    SubjectUpdateForm, UserUpdateForm,
+                    ClassTeacherUpdateForm, TeacherUpdateForm)
 
 @login_required
 def signup_view(request):
@@ -94,24 +94,77 @@ def subject_list_view(request,slug):
     return render(request,'admins/subject_list.html',dict)
 
 @login_required
+def subject_update_view(request,slug):
+    if not request.user.admin:
+        return HttpResponse('<h1>Aukaat bhai aukaaaat</h1>')
+    subject = Subject.objects.get(slug=slug)
+    if request.method == 'POST':
+        form = SubjectUpdateForm(request.POST)
+        if form.is_valid():
+            subject.teacher = form.cleaned_data.get('teacher')
+            subject.save()
+            return redirect('admins:subject_list',slug=subject.standard.slug)
+        else:
+            return HttpResponse('<h1>fo</h1>')
+
+    form = SubjectUpdateForm(initial={'teacher':subject.teacher})
+    return render(request,'admins/subject_teacher_update.html',{'form':form,'subject':subject})
+
+@login_required
 def student_update_view(request,slug):
     if not request.user.admin:
         return HttpResponse('<h1>Aukaat mein raho</h1>')
     student = Student.objects.get(slug=slug)
     if request.method == 'POST':
         form = StudentUpdateForm(request.POST, request.FILES, instance=student)
-        if form.is_valid():
+        form1 = UserUpdateForm(request.POST, request.FILES, instance=student.user)
+        if form.is_valid() and form1.is_valid():
             form.save()
+            form1.save()
             return redirect('admins:home')
     else:
         form = StudentUpdateForm(instance=student)
-        context = {
-            'student':student
-        }
-        return render(request,'admins/student_update.html',{'form':form})
+        form1 = UserUpdateForm(instance=student.user)
+        return render(request,'admins/student_update.html',{'form':form,'userform':form1,'student':student})
+
+@login_required
+def teacher_update_view(request,slug):
+    if not request.user.admin:
+        return HttpResponse('<h1>Aukaat mein raho</h1>')
+    teacher = Teacher.objects.get(slug=slug)
+    if request.method == 'POST':
+        form = TeacherUpdateForm(request.POST, request.FILES, instance=teacher)
+        form1 = UserUpdateForm(request.POST, request.FILES, instance=teacher.user)
+        if form.is_valid() and form1.is_valid():
+            form.save()
+            form1.save()
+            return redirect('admins:standard_list')
+    else:
+        form = TeacherUpdateForm(instance=teacher)
+        form1 = UserUpdateForm(instance=teacher.user)
+        return render(request,'admins/teacher_update.html',{'form':form,'userform':form1,'teacher':teacher})
+
+@login_required
+def class_teacher_update(request,slug):
+    if not request.user.admin:
+        return HttpResponse('<h1>Aukaat mein raho</h1>')
+    standard = Standard.objects.get(slug=slug)
+    class_teacher = standard.class_teacher
+    if request.method == 'POST':
+        form = ClassTeacherUpdateForm(request.POST)
+        if form.is_valid():
+            class_teacher.teacher = form.cleaned_data.get('teacher')
+            class_teacher.save()
+            return redirect('admins:standard_list')
+        else:
+            return HttpResponse("Form not valid")
+    form = ClassTeacherUpdateForm(initial={'teacher':class_teacher.teacher})
+    return render(request,'admins/class_teacher_update.html',{'form':form,'class_teacher':class_teacher})
 
 @login_required
 def refresh_standard_view(request,slug):
+    if not request.user.admin:
+        return HttpResponse('<h1>Aukaat mein raho</h1>')
     standard = Standard.objects.get(slug=slug)
     if request.method == 'POST':
         form = RefreshStandardForm(request.POST)
@@ -134,29 +187,32 @@ def refresh_standard_view(request,slug):
     return render(request,'admins/refresh_standard.html',{'form':form,'standard':standard})
 
 @login_required
-def update_subject_teacher(request):
+def all_student_list(request):
     if not request.user.admin:
-        return HttpResponse('<h1>You are not authorised to view this page</h1>')
-    standards = Standard.objects.all()
-    subjects = {}
-    for standard in standards:
-        subjects[standard] = Subject.objects.get(standard=standard)
-    return render(request,'admins/teacher_update')
+        return HttpResponse('<h1>Aukaat mein raho</h1>')
+    if request.method == 'POST':
+        student = Student.objects.get(user__email=request.POST['stud'])
+        return redirect('admins:student_profile',slug=student.slug)
+    students = Student.objects.all()
+    return render(request,'admins/all_student_list.html',{'students':students})
 
 @login_required
-def update_class_teacher(request, standard_slug, teacher_slug):
-    standard = Standard.objects.get(standard_slug)
-    teacher = Teacher.objects.get(teacher_slug)
-    class_teacher = ClassTeacher.objects.get(standard=standard)
-    ex_teacher = class_teacher.teacher
-    ex_teacher.is_class_teacher = False
-    class_teacher.teacher = teacher
-    teacher.is_class_teacher = True
-    teacher.save()
-    class_teacher.save()
-    ex_teacher.save()
-    return render(request,'admins:home')
+def all_teacher_list(request):
+    if not request.user.admin:
+        return HttpResponse('<h1>Aukaat mein raho</h1>')
+    if request.method == 'POST':
+        teacher = Teacher.objects.get(user__email=request.POST['stud'])
+        return redirect('admins:teacher_profile',slug=teacher.slug)
+    teachers = Teacher.objects.all()
+    return render(request,'admins/all_teacher_list.html',{'teachers':teachers})
 
 @login_required
-def class_teacher_view(request):
-    pass
+def student_profile_view(request,slug):
+    student = Student.objects.get(slug=slug)
+    return render(request,'admins/student_profile.html',{'student':student})
+
+@login_required
+def teacher_profile_view(request,slug):
+    teacher = Teacher.objects.get(slug=slug)
+    subjects = Subject.objects.filter(teacher=teacher)
+    return render(request,'admins/teacher_profile.html',{'teacher':teacher,'subjects':subjects})

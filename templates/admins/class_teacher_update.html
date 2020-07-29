@@ -1,0 +1,22 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'admins/style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<br>
+<div class="container">
+  <div class="jumbotron">
+    <h3 style="text-align: center; font-weight: bold; text-decoration: underline;">Class Teacher Update:</h3> <br> 
+    <p> <strong>Standard: </strong>{{class_teacher.standard|title}}</p><br>
+    <form class="student-list-form" method="post">
+      {% csrf_token %}
+      {{form|crispy}}
+      <input class="btn btn-primary btn-block" type="submit" name="submit" value="Submit">
+    </form>
+  </div>
+</div>
+{% endblock %}

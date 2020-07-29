@@ -16,6 +16,7 @@ from subjects.models import Subject
 from standards.models import Standard
 from accounts.models import User
 from uploads.models import Upload
+from students.forms import ProfilePicUpdateForm
 
 @login_required
 def student_home_view(request):
@@ -43,9 +44,7 @@ def student_gradebook_view(request):
     results = {}
     for examination in examinations:
         results[examination] = Result.objects.filter(student=student,examination=examination).order_by('subject')
-    subjects = []
-    for result in results[examinations[0]]:
-        subjects.append(result.subject)
+    subjects = Subject.objects.filter(standard=student.current_standard)
     standards = student.standards.all()
     dict = {
         'student':student,
@@ -60,17 +59,15 @@ def student_gradebook_view(request):
 @login_required
 def student_grades(request,slug):
     user = request.user
+    standard = Standard.objects.get(slug=slug)
     if not user.is_student:
         return HttpResponse('<h1>You are not authorised to view this page</h1>')
     student = Student.objects.get(user=user)
-    standard = Standard.objects.get(slug=slug)
     examinations = Examination.objects.filter(standard=standard)
     results = {}
     for examination in examinations:
         results[examination] = Result.objects.filter(student=student,examination=examination).order_by('subject')
-    subjects = []
-    for result in results[examinations[0]]:
-        subjects.append(result.subject)
+    subjects = Subject.objects.filter(standard=standard)
     dict = {
         'student':student,
         'standard':standard,
@@ -81,38 +78,24 @@ def student_grades(request,slug):
     return render(request,'students/grades.html',dict)
 
 @login_required
-def student_profile_view(request,slug):
+def student_profile_view(request,slug=None):
     user = request.user
-    student = Student.objects.get(slug=slug)
-    if user.is_teacher or student.user == user:
-        return render(request,'students/profile.html',{'student':student})
-    return HttpResponse('<h1>Invalid request</h1>')
-
+    if slug is None:
+        student = user.student
+    else:
+        student = Student.objects.get(slug=slug)
+    return render(request,'students/profile.html',{'student':student})
+    
 @login_required
-def upload_view(request):
+def profile_pic_update_view(request):
     user = request.user
     if not user.is_student:
         return HttpResponse('<h1>Invalid request</h1>')
-    student = Student.objects.get(user=user)
+    student = user.student
+    if request.method == 'POST':
+        form = ProfilePicUpdateForm(request.POST, request.FILES,instance=user)
+        form.save()
+        return redirect('students:profile',slug=student.slug)
+    form = ProfilePicUpdateForm(instance=user)
+    return render(request,'students/profile_pic_update.html',{'form':form })
 
-
-
-# class StudentDetailView(LoginRequiredMixin,DetailView):
-#     model = Student
-#     # template_name = 'student_detail.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         user = self.request.user
-#         student = Student.objects.get(pk=pk)
-#         user = student.user
-#         if user == self.kwargs['auth_user']:
-#             context['authorised'] = True
-#         else :
-#             context['authorised'] = False
-#         context['name'] = user.username
-#         standard = Standard.objects.get(pk=student.standard.pk)
-#         context['standard'] = standard.name
-#         subject_combo = student.get_subject_combination()
-#         context['results'] = Result.objects.filter(student=student)
-#         return context

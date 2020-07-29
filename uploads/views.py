@@ -7,10 +7,10 @@ from .models import Upload
 from subjects.models import Subject
 
 @login_required
-def upload_view(request,pk):
+def upload_view(request,slug):
     if not request.user.is_teacher:
         return HttpResponse('<h1>You are not authorised to view this page</h1>')
-    subject = Subject.objects.get(pk=pk)
+    subject = Subject.objects.get(slug=slug)
     teacher = subject.teacher
     if teacher.user != request.user:
         return HttpResponse('<h1>You are not authorised to view this page</h1>')
@@ -18,23 +18,23 @@ def upload_view(request,pk):
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
             upload = form.save(commit=False)
-            upload.subject = Subject.objects.get(pk=pk)
+            upload.subject = subject
             upload.save()
-            return redirect('teachers:upload',pk=pk)
+            return redirect('teachers:upload',slug=subject.slug)
         else:
             print(form.errors)
 
     else:
         form = UploadForm()
     pdfs = Upload.objects.filter(subject=subject)
-    return render(request,'teachers/upload.html',{'form':form,'pdfs':pdfs})
+    return render(request,'teachers/upload.html',{'form':form,'pdfs':pdfs,'subject':subject})
 
 @login_required
-def delete_view(request,pk):
-    pdf = Upload.objects.get(pk=pk)
+def delete_view(request,slug):
+    pdf = Upload.objects.get(slug=slug)
     subject = pdf.subject
     teacher = subject.teacher
     if teacher.user != request.user:
         return HttpResponse('<h1>You are not authorised to view this page</h1>')
     pdf.delete()
-    return redirect('teachers:upload',subject.pk)
+    return redirect('teachers:upload',subject.slug)

@@ -1,4 +1,4 @@
-from django.forms import ModelForm, DateInput
+from django.forms import ModelForm, DateInput, CheckboxInput
 from .models import Event
 
 class EventForm(ModelForm):
@@ -8,8 +8,9 @@ class EventForm(ModelForm):
     widgets = {
       'start_time': DateInput(attrs={'type': 'datetime-local','placeholder': 'yyyy-mm-ddThh:mm (Ex: 2001-01-31T20:56)'}, format='%Y-%m-%dT%H:%M'),
       'end_time': DateInput(attrs={'type': 'datetime-local','placeholder': 'yyyy-mm-ddThh:mm (Ex: 2001-01-31T20:58)'}, format='%Y-%m-%dT%H:%M'),
+      'broadcast': CheckboxInput(attrs={'class':'broadcast'})
     }
-    exclude = ('user','broadcast')
+    exclude = ('user',)
 
   def __init__(self, *args, **kwargs):
     super(EventForm, self).__init__(*args, **kwargs)
