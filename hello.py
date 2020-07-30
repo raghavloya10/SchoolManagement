@@ -1,5 +1,0 @@
-t = set()
-t.add(1)
-t.add(1)
-t.add(2)
-print(t)
