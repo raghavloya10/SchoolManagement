@@ -1,17 +1,17 @@
-"# SchoolManagement Project" 
+# School Management Project
 
-To get started...
+###### To get started...
 
 - Clone the repository
 - Make sure pip and python are installed in the system
-- Type the following commands one by one in the command prompt or terminal 
-    1. pip install -r requirements.txt    (To install all dependencies of the project)
-    2. python manage.py makemigrations    (To create tables for all the models)
-    3. python manage.py migrate           (To migrate the tables to the database)
-    4. python population_script.py        (To populate the tables with some dummy data)
-    5. python manage.py createsuperuser   (To create a superuser that can access the database directly)
-       (Remember the email and password for later usage)
-    6. python manage.py runserver         (To get the server up and running)
+- Type the following commands one by one in the command prompt or terminal having the project folder as the current working directory (cwd)
+    1. __pip install -r requirements.txt__  (_To install all dependencies of the project_)
+    2. __python manage.py makemigrations__    (_To create tables for all the models_)
+    3. __python manage.py migrate__           (_To migrate the tables to the database)_
+    4. __python population_script.py__        (_To populate the tables with some dummy_)
+    5. __python manage.py createsuperuser__   (_To create a superuser that can access the database directly_)
+       (_Remember the email and password for later usage_)
+    6. __python manage.py runserver__         (_To get the server up and running_)
     
 - Open any web browser and type the following url:
     http://localhost:8000 (To get to login page)
